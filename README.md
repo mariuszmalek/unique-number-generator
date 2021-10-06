@@ -21,7 +21,7 @@ version of the package.
 1. Install the package via Composer:
 
     ```sh
-    $ composer require mariuszmalek/unique-number-generator
+    $ composer require mariuszmalek/unique-number-generator:dev-master
     ```
 
     The package will automatically register its service provider.
