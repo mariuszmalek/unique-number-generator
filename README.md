@@ -39,7 +39,7 @@ version of the package.
 Saving a model is easy:
 
 ```php
-$post = $post->number = GeneratorNumber::generateID(Client::class, 'number', 'CLI-', $params);
+$post->number = GeneratorNumber::generateID(Post::class, 'number', 'CLI-', $params);
 ```
 
 *The first parameter is $model in which we search an existing class, the second is a specific column in the database.*
