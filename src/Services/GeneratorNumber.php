@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Malek\UniqueNumberGenerator\Support;
 
 use Malek\UniqueNumberGenerator\Exceptions\GeneratorException;
@@ -11,14 +13,18 @@ class GeneratorNumber
     /**
      * @param string $column
      * @param string $modelClass
+     * @param string $prefix
+     * @param array $params
      * @return string
      * @throws GeneratorException
      */
-    public static function generateID(string $modelClass, string $column): string
+    public static function generateID(string $modelClass, string $column, string $prefix = null, array $params = []): string
     {
         return self::run(
             $modelClass,
             $column,
+            $prefix,
+            $params,
             self::IDGenerator(),
             'Generation id is failed. The loop limit exceeds ' . self::$limitIterations
         );
@@ -29,20 +35,31 @@ class GeneratorNumber
      * @param string     $column
      * @param \Generator $generator
      * @param string     $exceptionMessage
-     * @param array      $whereParams
+     * @param array      $params
      * @return string
      * @throws GeneratorException
      */
-    protected static function run(string $modelClass, string $column, \Generator $generator, string $exceptionMessage, array $whereParams = []): string
+    protected static function run(string $modelClass, string $column, string $prefix = null, array $params = [], \Generator $generator, string $exceptionMessage): string
     {
         try {
             foreach ($generator as $id) {
-                $query = $modelClass::where([$column => $id]);
-                foreach ($whereParams as $param) {
+
+                /**
+                 * If has prefix then update $id
+                 */
+                (string) $combineID = self::prefixSet($id, $prefix);
+
+                $query = $modelClass::where([$column => $combineID]);
+
+                /**
+                 * Search by params
+                 */
+                foreach ($params as $param) {
                     $query->where(...$param);
                 }
+
                 if (!$query->first()) {
-                    return $id;
+                    return $combineID;
                 }
             }
         } catch (\Throwable $e) {
@@ -58,5 +75,15 @@ class GeneratorNumber
             yield (string)random_int(0000001, 9999999);            
         }
         return null;
+    }
+
+    /**
+     * @param string $id
+     * @param string $prefix
+     * @return string
+     */
+    protected static function prefixSet(string $id, string $prefix)
+    {
+        return $prefix ? $prefix . $id : $id;
     }
 }
