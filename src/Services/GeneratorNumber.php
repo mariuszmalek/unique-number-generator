@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Malek\UniqueNumberGenerator\Support;
 
+use Generator;
 use Malek\UniqueNumberGenerator\Exceptions\GeneratorException;
 
 class GeneratorNumber
@@ -39,7 +40,7 @@ class GeneratorNumber
      * @return string
      * @throws GeneratorException
      */
-    protected static function run(string $modelClass, string $column, string $prefix = null, array $params = [], \Generator $generator, string $exceptionMessage): string
+    protected static function run(string $modelClass, string $column, string $prefix = null, array $params = [], Generator $generator, string $exceptionMessage): string
     {
         try {
             foreach ($generator as $id) {
@@ -69,7 +70,7 @@ class GeneratorNumber
         throw new GeneratorException($exceptionMessage);
     }
 
-    protected static function IDGenerator(): ?\Generator
+    protected static function IDGenerator(): Generator
     {
         for ($i = 1; $i <= self::$limitIterations; $i++) {
             yield (string)random_int(0000001, 9999999);            

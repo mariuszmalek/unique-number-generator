@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Builder;
 trait Numberable
 {
     /**
-     * Indicates if the IDs are UUIDs.
-     *
      * @return string
      */
     protected function uniqueColumn(): string
@@ -20,9 +18,14 @@ trait Numberable
     public static function bootNumerable(): void
     {
         static::creating(function ($model) {
-            if ($model->uniqueColumn() && empty($model->{$model->getKeyName()})) {
-                $model->{$model->getKeyName()} = GeneratorNumber::generateID($model, $model->getKeyName(), $model->getKeyName() . '-', []);
+            if ($model->uniqueColumn()) {
+                $model->{$model->uniqueColumn()} = GeneratorNumber::generateID($model, $model->uniqueColumn(), static::getPrefix($model->getKeyName()), []);
             }
         });
+    }
+
+    public static function getPrefix($prefix)
+    {
+        return $prefix ? $prefix . '-' : null;
     }
 }
