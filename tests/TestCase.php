@@ -1,5 +1,6 @@
-<?php namespace Malek\UniqueNumberGenerator\Tests;
+<?php
 
+namespace Malek\UniqueNumberGenerator\Tests;
 
 /**
  * Class TestCase
