@@ -47,6 +47,26 @@ $post->number = GeneratorNumber::generateID(Post::class, 'number', 'CLI-', $para
 The next one is the prefix that will be added to the beginning of the result. The last one is the parameters for specific search classes. Only the first two parameters are required
 
 
+Using traits:
+
+```php
+use Malek\UniqueNumberGenerator\Numerable;
+
+class Product extends Model
+{
+    use Numerable;
+
+    /**
+     * @return string
+     */
+    public function uniqueColumn(): string
+    {
+        return 'number';
+    }
+}
+```
+
+You can add a Trait, so that after creating the model, a new unique number will be automatically created. You also need to add the uniqueColumn function which will contain the name of the column to be used.
 
 ## Bugs, Suggestions, Contributions and Support
 
