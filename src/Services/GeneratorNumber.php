@@ -9,8 +9,6 @@ use Malek\UniqueNumberGenerator\Exceptions\GeneratorException;
 
 class GeneratorNumber
 {
-    public static $limitIterations = 100000;
-
     /**
      * @param string $column
      * @param string $modelClass
@@ -27,7 +25,7 @@ class GeneratorNumber
             $prefix,
             $params,
             self::IDGenerator(),
-            'Generation id is failed. The loop limit exceeds ' . self::$limitIterations
+            'Generation id is failed. The loop limit exceeds ' . config('numerable.limitIterations')
         );
     }
 
@@ -72,7 +70,7 @@ class GeneratorNumber
 
     protected static function IDGenerator(): Generator
     {
-        for ($i = 1; $i <= self::$limitIterations; $i++) {
+        for ($i = 1; $i <= config('numerable.limitIterations'); $i++) {
             yield (string)random_int(0000001, 9999999);            
         }
         return null;
