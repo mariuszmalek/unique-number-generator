@@ -30,6 +30,14 @@ class ServiceProvider extends BaseServiceProvider
 
     protected function setUpConfig(): void
     {
+        $source = dirname(__DIR__) . '/resources/config/numerable.php';
 
+        if ($this->app instanceof LaravelApplication) {
+            $this->publishes([$source => config_path('numerable.php')], 'config');
+        } elseif ($this->app instanceof LumenApplication) {
+            $this->app->configure('numerable');
+        }
+
+        $this->mergeConfigFrom($source, 'numerable');
     }
 }
