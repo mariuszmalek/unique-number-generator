@@ -21,13 +21,8 @@ trait Numberable
     {
         static::creating(function ($model) {
             if ($model->uniqueColumn()) {
-                $model->{$model->uniqueColumn()} = GeneratorNumber::generateID($model, $model->uniqueColumn(), static::getPrefix($model->getKeyName()), []);
+                $model->{$model->uniqueColumn()} = GeneratorNumber::generateID($model, $model->uniqueColumn(), $model->uniqueColumn(), []);
             }
         });
-    }
-
-    public static function getPrefix($prefix)
-    {
-        return $prefix ? $prefix . '-' : null;
     }
 }
