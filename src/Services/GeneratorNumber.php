@@ -24,8 +24,7 @@ class GeneratorNumber
             $column,
             $prefix,
             $params,
-            self::IDGenerator(),
-            'Generation id is failed. The loop limit exceeds ' . config('numerable.limitIterations')
+            self::IDGenerator()
         );
     }
 
@@ -33,12 +32,11 @@ class GeneratorNumber
      * @param string     $modelClass
      * @param string     $column
      * @param \Generator $generator
-     * @param string     $exceptionMessage
      * @param array      $params
      * @return string
      * @throws GeneratorException
      */
-    protected static function run(string $modelClass, string $column, string $prefix = null, array $params = [], Generator $generator, string $exceptionMessage): string
+    protected static function run(string $modelClass, string $column, string $prefix = null, array $params = [], Generator $generator): string
     {
         try {
             foreach ($generator as $id) {
@@ -61,11 +59,9 @@ class GeneratorNumber
                     return $combineID;
                 }
             }
-        } catch (\Throwable $e) {
-            $exceptionMessage = $e->getMessage();
+        } catch (GeneratorException $e) {
+            return $e;
         }
-
-        throw new GeneratorException($exceptionMessage);
     }
 
     protected static function IDGenerator(): Generator

@@ -14,6 +14,6 @@ class GeneratorException extends Exception
      */
     public function render($request)
     {
-        return response()->view('oauth.emailTaken', [], 400);
+        return response('Generation id is failed. The loop limit exceeds ' . config('numerable.limitIterations'));
     }
 }
