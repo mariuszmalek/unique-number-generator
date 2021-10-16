@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Malek\UniqueNumberGenerator;
+
 use Malek\UniqueNumberGenerator\Support\GeneratorNumber;
 use Illuminate\Database\Eloquent\Builder;
 
